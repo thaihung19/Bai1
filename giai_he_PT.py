@@ -1,15 +1,38 @@
-#bài này giải hệ phương trình x+2y=5 và 3x+4y =6
-# Yêu cầu hoàn chỉnh lại đoạn code
-#để có 1 app giải hệ phương trình có n phương trình n ẩn
 import numpy as np
-A = np.array([(1,2),(3,4)])
-B = np.array([5,6])
-A1  = np.linalg.inv(A) # tạo ma trận nghich đảo
-print(A)
-print(B)
-print(A1)
-X = np.dot(A1,B)
-print('Nghiem cua he:',X)
-print('lam thu')
-print('aaaaaaaaaaaaaaaaaaaaaaaa')
-      
+
+def giai_he_phuong_trinh(A, B):
+    try:
+        A_inv = np.linalg.inv(A)
+        X = np.dot(A_inv, B)
+        return X
+    except np.linalg.LinAlgError as e:
+        if "matran" in str(e):
+            return []
+        else:
+            raise e
+
+# Nhập số phương trình và số ẩn từ người dùng
+n = int(input("Nhập số phương trình: "))
+m = int(input("Nhập số ẩn: "))
+
+# Khởi tạo ma trận hệ số A và vector b
+A = np.zeros((n, m))
+B = np.zeros(n)
+
+# Nhập giá trị cho ma trận A và vector B
+for i in range(n):
+    print(f"Nhập phương trình thứ {i + 1}:")
+    for j in range(m):
+        A[i][j] = float(input(f"Nhập hệ số a[{i + 1},{j + 1}]: "))
+    B[i] = float(input(f"Nhập b[{i + 1}]: "))
+
+# Gọi hàm để giải hệ phương trình
+X = giai_he_phuong_trinh(A, B)
+
+if len(X) > 0:
+    print("Nghiệm của hệ phương trình:")
+    print(X)
+elif len(X) == 0:
+    print("Hệ phương trình có vô số nghiệm.")
+else:
+    print("Hệ phương trình vô nghiệm.")
